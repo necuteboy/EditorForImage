@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: 'jdbc:postgresql://localhost:5433/image-project'
+    username: 'postgres'
+    password: '132'
+  jpa:
+    properties:
+      hibernate:
+        dialect: 'org.hibernate.dialect.PostgreSQLDialect'
+        format_sql: true
+        hbm2ddl:
+          auto: update
+        show_sql: true
+  liquibase:
+    change-log: classpath:/db/changelog/db-changelog.xml

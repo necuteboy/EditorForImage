@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2024-create-roles" author="Sergey Andreychikov">
+        <preConditions>
+            <not>
+                <tableExists tableName="roles_jn"/>
+            </not>
+        </preConditions>
+        <createTable tableName="roles_jn">
+            <column name="id" type="serial" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+        </createTable>
+        <sql>
+            insert into roles_jn (name)
+            VALUES ('ROLE_USER');
+            insert into roles_jn (name)
+            VALUES ('ROLE_ADMIN');
+        </sql>
+        <sql>
+            alter table roles_jn
+                add constraint name_length_check check ( length(name) > 0 );
+        </sql>
+    </changeSet>
+</databaseChangeLog>
