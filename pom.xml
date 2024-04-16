@@ -19,6 +19,8 @@
         <lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <openapi-diff.version>2.0.1</openapi-diff.version>
+        <!--OTHER PARAMS-->
+        <checkstyle.config.location>checkstyle/checkstyle.xml</checkstyle.config.location>
     </properties>
     <dependencies>
         <dependency>
@@ -118,6 +120,7 @@
             <scope>test</scope>
             <version>${openapi-diff.version}</version>
         </dependency>
+
 
     </dependencies>
 
