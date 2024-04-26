@@ -20,10 +20,9 @@
             <column name="size" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column name="owner_username" type="VARCHAR">
-                <constraints nullable="false"
-                foreignKeyName="fk_image_ref_id" references="user_ref(name)"
-                />
+            <column name="user_id" type="BIGINT">
+                <constraints
+                        nullable="false"/>
             </column>
         </createTable>
     </changeSet>

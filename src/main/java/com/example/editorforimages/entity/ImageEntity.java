@@ -16,9 +16,11 @@ public class ImageEntity {
     @Column(name = "origin_name")
     private String originalName;
 
-    private Integer size;
+    private String filename;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "owner_username")
-    private UserEntity author;
+    private Long size;
+
+
+    @Column(name = "user_id")
+    private Long author;
 }

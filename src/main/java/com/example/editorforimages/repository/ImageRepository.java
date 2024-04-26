@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface ImageRepository extends JpaRepository<ImageEntity, UUID> {
 
-    List<ImageEntity> findAllByAuthorName(String username);
+    List<ImageEntity> findAllByAuthor(Long id);
 
 }
