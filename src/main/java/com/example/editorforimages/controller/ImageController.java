@@ -1,6 +1,10 @@
 package com.example.editorforimages.controller;
 
-import com.example.editorforimages.dto.*;
+import com.example.editorforimages.dto.Image;
+import com.example.editorforimages.dto.ImageResponse;
+import com.example.editorforimages.dto.UiSuccessContainer;
+import com.example.editorforimages.dto.UploadResponseImage;
+import com.example.editorforimages.dto.UserDto;
 import com.example.editorforimages.mapper.ImageMapper;
 import com.example.editorforimages.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +19,13 @@ import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URLEncoder;
@@ -35,9 +45,11 @@ public class ImageController {
     @Operation(summary = "Загрузка нового изображения в систему",
             description = """
                     В рамках данного метода необходимо:
-                    1. Провалидировать файл. Максимальный размер файла - 10Мб, поддерживаемые расширения - png, jpeg.
+                    1. Провалидировать файл. Максимальный размер файла - 10Мб,\s
+                    поддерживаемые расширения - png, jpeg.
                     1. Загрузить файл в S3 хранилище.
-                    1. Сохранить в БД мета-данные файла - название; размер; ИД файла в S3; ИД пользователя, которому файл принадлежит.
+                    1. Сохранить в БД мета-данные файла - название и
+                    размер; ИД файла в S3; ИД пользователя, которому файл принадлежит.
                     """)
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Успех выполнения операции",

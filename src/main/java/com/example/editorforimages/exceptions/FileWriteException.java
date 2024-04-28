@@ -1,18 +1,18 @@
 package com.example.editorforimages.exceptions;
 
-public class FileWriteException extends RuntimeException{
+public class FileWriteException extends RuntimeException {
     public FileWriteException() {
     }
 
-    public FileWriteException(String message) {
+    public FileWriteException(final String message) {
         super(message);
     }
 
-    public FileWriteException(String message, Throwable cause) {
+    public FileWriteException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public FileWriteException(Throwable cause) {
+    public FileWriteException(final Throwable cause) {
         super(cause);
     }
 }

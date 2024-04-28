@@ -25,6 +25,7 @@ import java.util.Arrays;
         securedEnabled = true)
 @Service
 @Configuration
+@SuppressWarnings("FinalParameters")
 public class WebSecurityConfig {
 
     private UserService userService;

@@ -8,5 +8,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class ImageResponse {
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    public Image[] images;
+    private Image[] images;
 }

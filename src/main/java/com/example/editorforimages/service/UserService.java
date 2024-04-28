@@ -22,22 +22,22 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoderConfiguration passwordEncoder;
     private final RoleService roleService;
 
-    public UserEntity findByUserName(String name) {
+    public UserEntity findByUserName(final String name) {
         return userRepository.findByName(name);
     }
 
-    public UserEntity saveUser(String name, int age) {
+    public UserEntity saveUser(final String name, final int age) {
         var user = UserEntity.builder()
                 .name(name)
                 .build();
         return userRepository.save(user);
     }
 
-    public UserEntity getUserById(Long id){
+    public UserEntity getUserById(final Long id) {
         return userRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
-    public UserEntity createUser(RegistrationUserDto registrationUserDto) {
+    public UserEntity createUser(final RegistrationUserDto registrationUserDto) {
         UserEntity user = new UserEntity();
         user.setName(registrationUserDto.getUsername());
         user.setPassword(passwordEncoder.passwordEncoder().encode(registrationUserDto.getPassword()));

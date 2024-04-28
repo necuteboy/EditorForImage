@@ -9,11 +9,11 @@ import java.time.Duration;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "jwt")
+@SuppressWarnings("FinalParameters")
 public class JwtProperties {
     private String secret;
     private Duration expirationMs;
 
-    // Getters and setters for the properties
     public String getSecret() {
         return secret;
     }
