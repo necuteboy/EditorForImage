@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableConfigurationProperties({MinioProperties.class, JwtProperties.class})
 public class EditorForImagesApplication {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SpringApplication.run(EditorForImagesApplication.class, args);
     }
 

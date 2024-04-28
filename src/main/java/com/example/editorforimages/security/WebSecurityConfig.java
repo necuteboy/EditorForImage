@@ -25,34 +25,25 @@ import java.util.Arrays;
         securedEnabled = true)
 @Service
 @Configuration
+@SuppressWarnings("FinalParameters")
 public class WebSecurityConfig {
 
-    private UserService userService;
-    private JwtRequestFilter jwtRequestFilter;
+    private final UserService userService;
+    private final JwtRequestFilter jwtRequestFilter;
 
     private final PasswordEncoderConfiguration passwordEncoder;
 
     @Autowired
-    public WebSecurityConfig(UserService userService, JwtRequestFilter jwtRequestFilter,
-                             PasswordEncoderConfiguration passwordEncoder) {
+    public WebSecurityConfig(final UserService userService, final JwtRequestFilter jwtRequestFilter,
+                             final PasswordEncoderConfiguration passwordEncoder) {
         this.userService = userService;
         this.jwtRequestFilter = jwtRequestFilter;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
-    public void setJwtRequestFilter(JwtRequestFilter jwtRequestFilter) {
-        this.jwtRequestFilter = jwtRequestFilter;
-    }
-
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain filterChain(final HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable
                 )
@@ -67,10 +58,10 @@ public class WebSecurityConfig {
                     cors.configurationSource(source);
                 })
                 .authorizeHttpRequests(requests -> requests
-                                .requestMatchers("/auth/register").permitAll()
-                                .requestMatchers("/auth/login").permitAll()
-                                .requestMatchers("/image/**").authenticated()
-                                .anyRequest().permitAll()
+                        .requestMatchers("/auth/register").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/image/**").authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(AbstractHttpConfigurer::disable
                 )
@@ -92,7 +83,7 @@ public class WebSecurityConfig {
 
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration
+    public AuthenticationManager authenticationManager(final AuthenticationConfiguration
                                                                authenticationConfiguration)
             throws Exception {
         return authenticationConfiguration.getAuthenticationManager();

@@ -1,6 +1,10 @@
 package com.example.editorforimages.controller;
 
-import com.example.editorforimages.dto.*;
+import com.example.editorforimages.dto.Image;
+import com.example.editorforimages.dto.ImageResponse;
+import com.example.editorforimages.dto.UiSuccessContainer;
+import com.example.editorforimages.dto.UploadResponseImage;
+import com.example.editorforimages.dto.UserDto;
 import com.example.editorforimages.mapper.ImageMapper;
 import com.example.editorforimages.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +19,13 @@ import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URLEncoder;
@@ -35,9 +45,11 @@ public class ImageController {
     @Operation(summary = "Загрузка нового изображения в систему",
             description = """
                     В рамках данного метода необходимо:
-                    1. Провалидировать файл. Максимальный размер файла - 10Мб, поддерживаемые расширения - png, jpeg.
+                    1. Провалидировать файл. Максимальный размер файла - 10Мб,\s
+                    поддерживаемые расширения - png, jpeg.
                     1. Загрузить файл в S3 хранилище.
-                    1. Сохранить в БД мета-данные файла - название; размер; ИД файла в S3; ИД пользователя, которому файл принадлежит.
+                    1. Сохранить в БД мета-данные файла - название и
+                    размер; ИД файла в S3; ИД пользователя, которому файл принадлежит.
                     """)
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Успех выполнения операции",
@@ -48,8 +60,8 @@ public class ImageController {
                     content = {@Content(schema = @Schema(implementation = UiSuccessContainer.class))})
     })
     public ResponseEntity<?> uploadImage(
-            @RequestPart("file") @Valid MultipartFile image,
-            @RequestBody UserDto user) {
+            @RequestPart("file") @Valid final MultipartFile image,
+            @RequestBody final UserDto user) {
         var imageUUID = imageService.uploadImage(image, user.name());
         return ResponseEntity.ok(new UploadResponseImage(imageUUID));
     }
@@ -71,16 +83,16 @@ public class ImageController {
                     content = {@Content(schema = @Schema(implementation = UiSuccessContainer.class))})
     })
     @SneakyThrows
-    public ResponseEntity<?> downloadImage(@PathVariable("image-id") UUID imageId,
-                                           @RequestBody UserDto user) {
-        if (!imageService.getImageMeta(imageId).getAuthor().equals(user.id()))
+    public ResponseEntity<?> downloadImage(@PathVariable("image-id") final UUID imageId,
+                                           @RequestBody final UserDto user) {
+        if (!imageService.getImageMeta(imageId).getAuthor().equals(user.id())) {
             return ResponseEntity.status(404)
                     .body(new UiSuccessContainer(false, "Image not found, or unavailable"));
-
+        }
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
-                        URLEncoder.encode(imageService.getImageMeta(imageId).getOriginalName(),
-                                StandardCharsets.UTF_8) + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""
+                        + URLEncoder.encode(imageService.getImageMeta(imageId).getOriginalName(),
+                        StandardCharsets.UTF_8) + "\"")
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(imageService.downloadImage(imageId));
     }
@@ -101,12 +113,12 @@ public class ImageController {
             @ApiResponse(responseCode = "500", description = "Непредвиденная ошибка",
                     content = {@Content(schema = @Schema(implementation = UiSuccessContainer.class))})
     })
-    public ResponseEntity<?> deleteImage(@PathVariable("image-id") UUID imageId,
-                                         @RequestBody UserDto user) {
-        if (!imageService.getImageMeta(imageId).getAuthor().equals(user.id()))
+    public ResponseEntity<?> deleteImage(@PathVariable("image-id") final UUID imageId,
+                                         @RequestBody final UserDto user) {
+        if (!imageService.getImageMeta(imageId).getAuthor().equals(user.id())) {
             return ResponseEntity.status(404)
                     .body(new UiSuccessContainer(false, "Image not found, or unavailable"));
-
+        }
         imageService.deleteImage(imageId);
         return ResponseEntity.ok(new UiSuccessContainer(true, null));
     }
@@ -123,7 +135,7 @@ public class ImageController {
             @ApiResponse(responseCode = "500", description = "Непредвиденная ошибка",
                     content = {@Content(schema = @Schema(implementation = UiSuccessContainer.class))})
     })
-    public ResponseEntity<?> getImages(@RequestBody UserDto user) {
+    public ResponseEntity<?> getImages(@RequestBody final UserDto user) {
         var imageMetaEntities = imageService.getImages(user.id());
         var images = metaMapper.toImageList(imageMetaEntities);
         return ResponseEntity.ok(new ImageResponse(images.toArray(new Image[0])));

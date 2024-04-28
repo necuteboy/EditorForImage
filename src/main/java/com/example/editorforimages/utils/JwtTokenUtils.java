@@ -19,7 +19,7 @@ import java.util.Map;
 public class JwtTokenUtils {
     private final JwtProperties jwtProperties;
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(final UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         List<String> roleList = userDetails.getAuthorities()
                 .stream().map(GrantedAuthority::getAuthority)
@@ -36,15 +36,15 @@ public class JwtTokenUtils {
                 .compact();
     }
 
-    public String getUsername(String token) {
+    public String getUsername(final String token) {
         return getAllClaimsFromToken(token).getSubject();
     }
 
-    public List<String> getRoles(String token) {
+    public List<String> getRoles(final String token) {
         return getAllClaimsFromToken(token).get("roles", List.class);
     }
 
-    private Claims getAllClaimsFromToken(String token) {
+    private Claims getAllClaimsFromToken(final String token) {
         return Jwts.parser()
                 .setSigningKey(jwtProperties.getSecret())
                 .parseClaimsJws(token)

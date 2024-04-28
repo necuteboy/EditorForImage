@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class ObjectStorageConfig {
 
     @Bean
-    public MinioClient minioClient(MinioProperties properties) throws Exception {
+    public MinioClient minioClient(final MinioProperties properties) throws Exception {
         MinioClient client = MinioClient.builder()
                 .credentials(
                         properties.getAccessKey(),

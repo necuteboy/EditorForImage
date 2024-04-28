@@ -2,7 +2,14 @@ package com.example.editorforimages.repository;
 
 import com.example.editorforimages.exceptions.FileReadException;
 import com.example.editorforimages.exceptions.FileWriteException;
-import io.minio.*;
+import io.minio.GetObjectArgs;
+import io.minio.ListObjectsArgs;
+import io.minio.MinioClient;
+import io.minio.ObjectWriteResponse;
+import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
+import io.minio.Result;
+import io.minio.StatObjectArgs;
 import io.minio.errors.ErrorResponseException;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +23,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MinioFileStorage {
     private final MinioClient minioClient;
-    public ObjectWriteResponse saveObject(String objectName, Long size, InputStream object) throws FileWriteException {
+
+    public ObjectWriteResponse saveObject(final String objectName,
+                                          final Long size, final InputStream object) throws FileWriteException {
         try {
             return minioClient.putObject(PutObjectArgs.builder()
                     .bucket("image-storage")
@@ -26,7 +35,8 @@ public class MinioFileStorage {
             throw new FileWriteException(e);
         }
     }
-    public boolean isObjectExist(String objectName) {
+
+    public boolean isObjectExist(final String objectName) {
         try {
             minioClient.statObject(StatObjectArgs.builder()
                     .bucket("image-storage")
@@ -39,7 +49,7 @@ public class MinioFileStorage {
         }
     }
 
-    public InputStream getObject(String objectName) throws FileReadException {
+    public InputStream getObject(final String objectName) throws FileReadException {
         try {
             return minioClient.getObject(GetObjectArgs.builder()
                     .bucket("image-storage")
@@ -49,7 +59,7 @@ public class MinioFileStorage {
         }
     }
 
-    public void deleteObject(String objectName) throws FileWriteException {
+    public void deleteObject(final String objectName) throws FileWriteException {
         try {
             minioClient.removeObject(RemoveObjectArgs.builder()
                     .bucket("image-storage")
@@ -68,7 +78,8 @@ public class MinioFileStorage {
         for (Result<Item> result : iterable) {
             try {
                 objectNameList.add(result.get().objectName());
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
         return objectNameList;
     }

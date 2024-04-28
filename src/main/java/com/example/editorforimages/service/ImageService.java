@@ -23,7 +23,7 @@ public class ImageService {
     private final ImageRepository metaRepository;
     private final UserService userService;
 
-    public UUID uploadImage(MultipartFile image, String username) throws ConstraintViolationException {
+    public UUID uploadImage(final MultipartFile image, final String username) throws ConstraintViolationException {
         MinioFileStorageService.FileSaveResult res;
         try {
             res = imageStorageService.saveFile(image);
@@ -41,27 +41,30 @@ public class ImageService {
         return meta.getId();
 
     }
-    public InputStreamResource downloadImage(UUID imageId) throws FileReadException {
-        if (!metaRepository.existsById(imageId))
+
+    public InputStreamResource downloadImage(final UUID imageId) throws FileReadException {
+        if (!metaRepository.existsById(imageId)) {
             throw new EntityNotFoundException("No image with id: " + imageId);
+        }
 
         InputStream fileInputStream = imageStorageService.get(imageId);
         return new InputStreamResource(fileInputStream);
     }
 
-    public ImageEntity getImageMeta(UUID imageID) {
+    public ImageEntity getImageMeta(final UUID imageID) {
         return imageStorageService.getMeta(imageID);
     }
 
     @SneakyThrows
-    public void deleteImage(UUID imageID) {
-        if (!metaRepository.existsById(imageID))
+    public void deleteImage(final UUID imageID) {
+        if (!metaRepository.existsById(imageID)) {
             throw new EntityNotFoundException("No image with id: " + imageID);
+        }
         imageStorageService.delete(imageID.toString());
         metaRepository.deleteById(imageID);
     }
 
-    public List<ImageEntity> getImages(Long id) {
+    public List<ImageEntity> getImages(final Long id) {
         return metaRepository.findAllByAuthor(id);
     }
 }

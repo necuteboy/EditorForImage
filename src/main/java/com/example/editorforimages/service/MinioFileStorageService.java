@@ -19,10 +19,11 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class MinioFileStorageService implements ImageStorageService{
+public class MinioFileStorageService implements ImageStorageService {
     private final MinioFileStorage imageStorage;
     private final ImageRepository metaRepository;
-    public FileSaveResult saveFile(MultipartFile file) throws FileWriteException {
+
+    public FileSaveResult saveFile(final MultipartFile file) throws FileWriteException {
 
         UUID generatedFileName = UUID.randomUUID();
         try {
@@ -35,24 +36,24 @@ public class MinioFileStorageService implements ImageStorageService{
     }
 
     @Override
-    public InputStream get(UUID id) throws FileReadException {
+    public InputStream get(final UUID id) throws FileReadException {
         return imageStorage.getObject(String.valueOf(id));
     }
 
     @Override
-    public ImageEntity getMeta(UUID id) {
+    public ImageEntity getMeta(final UUID id) {
         return metaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Image not found"));
     }
 
     @Override
-    public void delete(String filename) throws FileWriteException {
+    public void delete(final String filename) throws FileWriteException {
         imageStorage.deleteObject(filename);
     }
 
     @Setter
     @Getter
     @AllArgsConstructor
-    public static class FileSaveResult{
+    public static class FileSaveResult {
         private String originalName;
         private UUID savedFilename;
     }
