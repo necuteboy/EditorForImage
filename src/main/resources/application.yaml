@@ -1,5 +1,7 @@
 server:
   port: 8080
+  servlet:
+    context-path: "/api/v1"
 spring:
   datasource:
     url: 'jdbc:postgresql://localhost:5433/image-project'
@@ -15,3 +17,16 @@ spring:
         show_sql: true
   liquibase:
     change-log: classpath:/db/changelog/db-changelog.xml
+jwt:
+  secret: oeidnfdsofsdofjdofijwdfoijwfojwfo
+  expirationMs: 30
+file:
+  max-size: 10485760
+  allowed-format: png, jpeg
+
+minio:
+  url: http://localhost:9000
+  accessKey: user
+  secretKey: password
+  bucket: image-storage
+  image-size: 10485760
