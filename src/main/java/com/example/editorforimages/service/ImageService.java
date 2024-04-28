@@ -64,7 +64,7 @@ public class ImageService {
         metaRepository.deleteById(imageID);
     }
 
-    public List<ImageEntity> getImages(Long id) {
+    public List<ImageEntity> getImages(final Long id) {
         return metaRepository.findAllByAuthor(id);
     }
 }

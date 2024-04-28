@@ -60,8 +60,8 @@ public class ImageController {
                     content = {@Content(schema = @Schema(implementation = UiSuccessContainer.class))})
     })
     public ResponseEntity<?> uploadImage(
-            @RequestPart("file") @Valid MultipartFile image,
-            @RequestBody UserDto user) {
+            @RequestPart("file") @Valid final MultipartFile image,
+            @RequestBody final UserDto user) {
         var imageUUID = imageService.uploadImage(image, user.name());
         return ResponseEntity.ok(new UploadResponseImage(imageUUID));
     }
@@ -83,16 +83,16 @@ public class ImageController {
                     content = {@Content(schema = @Schema(implementation = UiSuccessContainer.class))})
     })
     @SneakyThrows
-    public ResponseEntity<?> downloadImage(@PathVariable("image-id") UUID imageId,
-                                           @RequestBody UserDto user) {
-        if (!imageService.getImageMeta(imageId).getAuthor().equals(user.id()))
+    public ResponseEntity<?> downloadImage(@PathVariable("image-id") final UUID imageId,
+                                           @RequestBody final UserDto user) {
+        if (!imageService.getImageMeta(imageId).getAuthor().equals(user.id())) {
             return ResponseEntity.status(404)
                     .body(new UiSuccessContainer(false, "Image not found, or unavailable"));
-
+        }
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
-                        URLEncoder.encode(imageService.getImageMeta(imageId).getOriginalName(),
-                                StandardCharsets.UTF_8) + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""
+                        + URLEncoder.encode(imageService.getImageMeta(imageId).getOriginalName(),
+                        StandardCharsets.UTF_8) + "\"")
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(imageService.downloadImage(imageId));
     }
@@ -113,12 +113,12 @@ public class ImageController {
             @ApiResponse(responseCode = "500", description = "Непредвиденная ошибка",
                     content = {@Content(schema = @Schema(implementation = UiSuccessContainer.class))})
     })
-    public ResponseEntity<?> deleteImage(@PathVariable("image-id") UUID imageId,
-                                         @RequestBody UserDto user) {
-        if (!imageService.getImageMeta(imageId).getAuthor().equals(user.id()))
+    public ResponseEntity<?> deleteImage(@PathVariable("image-id") final UUID imageId,
+                                         @RequestBody final UserDto user) {
+        if (!imageService.getImageMeta(imageId).getAuthor().equals(user.id())) {
             return ResponseEntity.status(404)
                     .body(new UiSuccessContainer(false, "Image not found, or unavailable"));
-
+        }
         imageService.deleteImage(imageId);
         return ResponseEntity.ok(new UiSuccessContainer(true, null));
     }
@@ -135,7 +135,7 @@ public class ImageController {
             @ApiResponse(responseCode = "500", description = "Непредвиденная ошибка",
                     content = {@Content(schema = @Schema(implementation = UiSuccessContainer.class))})
     })
-    public ResponseEntity<?> getImages(@RequestBody UserDto user) {
+    public ResponseEntity<?> getImages(@RequestBody final UserDto user) {
         var imageMetaEntities = imageService.getImages(user.id());
         var images = metaMapper.toImageList(imageMetaEntities);
         return ResponseEntity.ok(new ImageResponse(images.toArray(new Image[0])));

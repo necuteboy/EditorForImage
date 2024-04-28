@@ -10,7 +10,7 @@ public class AppError {
     private final String message;
     private Date timestamp;
 
-    public AppError(int status, String message) {
+    public AppError(final int status, final String message) {
         this.status = status;
         this.message = message;
         this.timestamp = new Date();

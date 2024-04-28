@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByName(username);
         return new org.springframework.security.core.userdetails.User(
                 user.getName(),
