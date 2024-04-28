@@ -1,20 +1,20 @@
 version: "3"
 
 services:
-#  api:
-#    image: 'necute_boy/api:1.0.0'
-#    container_name: 'image-api'
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - 'postgres'
-#      - 'minio'
-#    environment:
-#      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://editor:5432/image-project'
-#      - 'MINIO_URL=http://image-minio:9000'
+  api:
+    image: 'necute_boy/api:1.0.0'
+    container_name: 'image-api'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - 'postgres'
+      - 'minio'
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://editor:5432/image-project'
+      - 'MINIO_URL=http://image-minio:9000'
 
   postgres:
     image: postgres:14.5-alpine
