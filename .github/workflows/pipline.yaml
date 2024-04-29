@@ -49,7 +49,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3.1.0
         with:
-          images: shipim/image-project
+          images: necuteboy/image-project
 
       - name: build and push Docker image
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
