@@ -205,9 +205,9 @@
                             <dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>
                             <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
                             <includes>
-                                <include>com/example/imageproject/service/*</include>
-                                <include>com/example/imageproject/util/*</include>
-                                <include>com/example/imageproject/controller/*</include>
+                                <include>com/example/editorforimages/service/*</include>
+                                <include>com/example/editorforimages/utils/*</include>
+                                <include>com/example/editorforimages/controller/*</include>
                             </includes>
                         </configuration>
                     </execution>
