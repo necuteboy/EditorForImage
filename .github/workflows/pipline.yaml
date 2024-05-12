@@ -28,14 +28,16 @@ jobs:
         run: mvn clean install
 
       - name: add coverage to PR
-        if: ${{ github.event_name == 'pull_request' }}
         id: jacoco
+        if: (github.event_name != 'workflow_dispatch')
         uses: madrapps/jacoco-report@v1.6.1
         with:
           paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
-          token: ${{ secrets.MY_GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 50
           min-coverage-changed-files: 50
+          update-comment: true
+          title: "Jacoco Report"
 
       - name: log in to Docker Hub
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
@@ -49,7 +51,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3.1.0
         with:
-          images: shipim/image-project
+          images: necute_boy/image-project
 
       - name: build and push Docker image
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
