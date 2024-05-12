@@ -23,7 +23,7 @@ public class ImageService {
     private final ImageRepository metaRepository;
     private final UserService userService;
 
-    public UUID uploadImage(final MultipartFile image, final String username) throws ConstraintViolationException {
+    public UUID uploadImage(final  MultipartFile image, final String username) throws ConstraintViolationException {
         MinioFileStorageService.FileSaveResult res;
         try {
             res = imageStorageService.saveFile(image);
